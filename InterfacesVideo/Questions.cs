@@ -27,8 +27,43 @@ Drone הוא כלי תחבורה המסוגל לעוף. כדי להפעיל או
 מחזירות ערך. ההודעות ואחוז הסוללה מאפשרים לעקוב אחר הפעולות.
 */
 
-public class Drone
+using System;
+
+public class Drone: Vehicle, IFlyable, IChargeable
 {
+    private string model;
+    private int battery;
+    public Drone(string model, int battery)
+    {
+        this.model = model;
+        this.battery = battery;
+    }
+    public int Battery
+    {
+        get { return battery; }
+        set { this.battery = value; }
+    }
+    public void Fly()
+    {
+        if (battery < 10)
+            Console.WriteLine(model + " cannot take off - battery is " + battery + "%");
+        else
+        {
+            Console.WriteLine(model + "is flying");
+            battery -= 10;
+        }
+    }
+    public void Charge()
+    {
+        battery = 100;
+        Console.WriteLine(model + " charged - battery is " + battery + "%");
+    }
+    public string ChargingStatus()
+    {
+        if (battery < 10) return "Empty";
+        if (battery < 30) return "Low";
+        return "Ready";
+    }
 }
 
 /*
@@ -101,3 +136,5 @@ public class Drone
    אין לבדוק אם האובייקט הוא Phone, Drone או סוג מסוים אחר.
    ודאו שהפרויקט חוזר להיבנות לאחר שכל המחלקות מקיימות את החוזה החדש.
 */
+// ממשק הוא חוזה, וכל מחלקה שחתומה עליו חייבת לממש את כל הפעולות שבו.
+// כשמוסיפים פעולה לממשק, כל המחלקות שמממשות אותו מפרות את החוזה עד שיממשו אותה.
